@@ -3,7 +3,11 @@ use std::time::Instant;
 use aliner::DiffStat;
 use bio::io::fasta::Reader;
 
+use crate::aliner::Score;
+
 mod aliner;
+mod mutation_detection;
+
 // TODO:
 // 1. Comment aligner.rs
 // 2. Make [Score] as different struct that scores match, unmatch, gap open, gap extend
@@ -19,9 +23,9 @@ fn main() {
     let delta_seq = delta_record.seq();
 
     let diff = DiffStat::new(beta_seq, delta_seq);
-    let score = |a: u8, b: u8| if a == b { 1i32 } else { -1i32 };
+    let score = Score::new(1, -1);
     let time = Instant::now();
-    let distance = diff.pairwise_aligner((-5, -1).into(), &score);
+    let distance = diff.pairwise_aligner((-5, -1).into(), score);
 
     println!("{:?}", distance);
 

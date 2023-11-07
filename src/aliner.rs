@@ -6,27 +6,57 @@ use bio::alignment::{
     pairwise::{MatchFunc, Scoring},
 };
 
-pub struct GapScore {
+///  Scoring rule for [Substitution matrix](https://en.wikipedia.org/wiki/Smith_Waterman_algorithm#Substitution_matrix)
+pub struct Score {
+    r#match: i32,
+    miss_match: i32,
+}
+
+impl Score {
+    pub fn new(r#match: i32, miss_match: i32) -> Self {
+        Self {
+            r#match,
+            miss_match,
+        }
+    }
+}
+
+impl MatchFunc for Score {
+    fn score(&self, a: u8, b: u8) -> i32 {
+        if a == b {
+            self.r#match
+        } else {
+            self.miss_match
+        }
+    }
+}
+
+/// Specifying gap penalty for Smith Waterman algorithm
+/// See: https://en.wikipedia.org/wiki/Smith_Waterman_algorithm#Gap_penalty
+pub struct GapPanelty {
     pub open: i32,
     pub extend: i32,
 }
 
-impl GapScore {
+impl GapPanelty {
     pub fn new(open: i32, extend: i32) -> Self {
-        assert!(open < 0, "Gap open apnelty cant be positive");
-        assert!(extend < 0, "Gap extend apnelty cant be positive");
+        assert!(open < 0, "Gap open penalty cant be positive");
+        assert!(extend < 0, "Gap extend penalty cant be positive");
         Self { open, extend }
     }
 }
 
-impl From<(i32, i32)> for GapScore {
+impl From<(i32, i32)> for GapPanelty {
     fn from(value: (i32, i32)) -> Self {
         Self::new(value.0, value.1)
     }
 }
 
+/// Compare two sequences and align them
 pub struct DiffStat<'seq> {
+    /// Master sequence
     reference: &'seq [u8],
+    /// The one that will be aligned
     query: &'seq [u8],
 }
 
@@ -41,15 +71,16 @@ impl<'seq> DiffStat<'seq> {
         }
     }
 
+    /// Calculate [Levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) distance
     pub fn levenshtein(&self) -> u32 {
         levenshtein(self.reference, self.query)
     }
 
-    /// [Self::levenshtein] with SIMD
     pub fn levenshtein_simd(&self) -> u32 {
         bio::alignment::distance::simd::levenshtein(self.reference, self.query)
     }
 
+    /// Calculate [Hamming](https://en.wikipedia.org/wiki/Hamming_distance) distance
     pub fn hamming_distance(&self) -> u64 {
         hamming(self.reference, self.query)
     }
@@ -58,10 +89,8 @@ impl<'seq> DiffStat<'seq> {
         bio::alignment::distance::simd::hamming(self.reference, self.query)
     }
 
-    pub fn pairwise_aligner<F>(&self, gap: GapScore, score: F) -> bio::alignment::Alignment
-    where
-        F: MatchFunc,
-    {
+    /// Pairwise alignment using Smith Waterman algorithm
+    pub fn pairwise_aligner(&self, gap: GapPanelty, score: Score) -> bio::alignment::Alignment {
         bio::alignment::pairwise::Aligner::with_capacity(
             self.reference.len(),
             self.query.len(),
