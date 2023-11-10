@@ -25,6 +25,15 @@ impl Score {
     }
 }
 
+impl From<(i32, i32)> for Score {
+    fn from(value: (i32, i32)) -> Self {
+        Self {
+            r#match: value.0,
+            miss_match: value.1,
+        }
+    }
+}
+
 impl MatchFunc for Score {
     fn score(&self, a: u8, b: u8) -> i32 {
         if a == b {
