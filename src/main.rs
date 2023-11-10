@@ -15,7 +15,6 @@ mod reader;
 // TODO:
 // 1. Mutation detection scoring (stats) [[mutation_detection.rs]]
 // 2. Pretty print is not considering '\n' as newline
-// 3. Fasta struct to abstract reading from file
 //
 
 // Initilize tracing
@@ -38,13 +37,13 @@ fn main() -> anyhow::Result<()> {
     let delta_record = covid_delta.records().next().unwrap()?;
     let delta_seq = delta_record.seq();
 
-    let mut diff = DiffStat::new(beta_seq, delta_seq);
-
     let score = Score::new(1, -1);
     let gap = GapPanelty::new(-5, -1);
 
+    let mut diff = DiffStat::new(beta_seq, delta_seq, gap, score);
+
     let time = Instant::now();
-    diff.pairwise_aligner_semiglobal(gap, score);
+    diff.pairwise_aligner_semiglobal();
 
     println!("{:?}", diff.pretty(120).unwrap());
 

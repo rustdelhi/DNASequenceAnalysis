@@ -1,4 +1,4 @@
-use std::{fs::File, io::BufReader, path::Path};
+use std::{fmt::Display, fs::File, io::BufReader, path::Path};
 
 use bio::io::fasta::Records;
 
@@ -16,8 +16,9 @@ pub struct FastaReader {
 impl FastaReader {
     pub fn from_file<P>(file_path: P) -> Result<Self, FastaReaderError>
     where
-        P: AsRef<Path>,
+        P: AsRef<Path> + Display,
     {
+        tracing::info!("Fasta reader for file {}", file_path.to_string());
         let fasta_reader = bio::io::fasta::Reader::from_file(file_path.as_ref())
             .map_err(|err| FastaReaderError::Generic(err.to_string()))?;
         Ok(Self {

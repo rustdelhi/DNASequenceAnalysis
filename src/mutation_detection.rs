@@ -1,4 +1,4 @@
-use bio::alignment::Alignment;
+use bio::alignment::{pairwise::MatchFunc, Alignment};
 
 use crate::aliner::DiffStat;
 
@@ -9,15 +9,22 @@ struct MutationStats {
     subs: usize,
 }
 
-struct Muatation<'m> {
-    diffstat: &'m DiffStat<'m>,
+struct Muatation<'m, F>
+where
+    F: MatchFunc + Clone,
+{
+    diffstat: &'m DiffStat<'m, F>,
     pairwise_alignment: Option<Alignment>,
 }
 
-impl<'m> Muatation<'m> {
+impl<'m, F> Muatation<'m, F>
+where
+    F: MatchFunc + Clone,
+{
     pub fn from<D>(diffstat: &'m D) -> Self
     where
-        D: AsRef<DiffStat<'m>>,
+        D: AsRef<DiffStat<'m, F>>,
+        F: MatchFunc,
     {
         Self {
             diffstat: diffstat.as_ref(),
