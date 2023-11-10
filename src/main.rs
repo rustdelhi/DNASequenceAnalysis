@@ -3,10 +3,14 @@ use std::time::Instant;
 use aliner::DiffStat;
 use bio::io::fasta::Reader;
 
-use crate::aliner::Score;
+use crate::{
+    aliner::{GapPanelty, Score},
+    reader::FastaReader,
+};
 
 mod aliner;
 mod mutation_detection;
+mod reader;
 
 // TODO:
 // 1. Mutation detection scoring (stats) [[mutation_detection.rs]]
@@ -21,22 +25,29 @@ fn init() -> tracing_appender::non_blocking::WorkerGuard {
     guard
 }
 
-fn main() {
-    let guard = init();
-    let covid_beta = Reader::from_file("./assets/SARS-beta.fasta").unwrap();
-    let covid_delta = Reader::from_file("./assets/SARS-delta.fasta").unwrap();
+fn main() -> anyhow::Result<()> {
+    let _guard = init();
+    let covid_beta = FastaReader::from_file("./assets/SARS-beta.fasta")?;
+    let covid_delta = FastaReader::from_file("./assets/SARS-delta.fasta")?;
+    let covid_omicron = FastaReader::from_file("./assets/SARS-omicron.fasta")?;
+    let covid_gamma = FastaReader::from_file("./assets/SARS-gamma.fasta")?;
+    let covid_zeta = FastaReader::from_file("./assets/SARS-zeta.fasta")?;
 
-    let beta_record = covid_beta.records().next().unwrap().unwrap();
+    let beta_record = covid_beta.records().next().unwrap()?;
     let beta_seq = beta_record.seq();
-    let delta_record = covid_delta.records().next().unwrap().unwrap();
+    let delta_record = covid_delta.records().next().unwrap()?;
     let delta_seq = delta_record.seq();
 
     let mut diff = DiffStat::new(beta_seq, delta_seq);
+
     let score = Score::new(1, -1);
+    let gap = GapPanelty::new(-5, -1);
+
     let time = Instant::now();
-    diff.pairwise_aligner_semiglobal((-5, -1).into(), score);
+    diff.pairwise_aligner_semiglobal(gap, score);
 
     println!("{:?}", diff.pretty(120).unwrap());
 
     println!("time taken: {:?}", time.elapsed());
+    Ok(())
 }

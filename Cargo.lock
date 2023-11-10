@@ -204,7 +204,9 @@ dependencies = [
 name = "dna_sequence_analysis"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "bio",
+ "thiserror",
  "tracing",
  "tracing-appender",
  "tracing-subscriber",
