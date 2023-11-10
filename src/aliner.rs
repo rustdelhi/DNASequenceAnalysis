@@ -91,7 +91,7 @@ impl From<(i32, i32)> for GapPanelty {
 /// Compare two sequences and align them
 pub struct DiffStat<'seq, F>
 where
-    F: MatchFunc + Clone,
+    F: MatchFunc + Clone + Display,
 {
     /// Master sequence
     reference: &'seq [u8],
@@ -107,7 +107,7 @@ where
 
 impl<'seq, F> DiffStat<'seq, F>
 where
-    F: MatchFunc + Clone,
+    F: MatchFunc + Clone + Display,
 {
     /// Generate a new [DiffStat] that aligns query with reference as master sequence
     pub fn new<T>(reference: &'seq T, query: &'seq T, gap_penalty: GapPanelty, score: F) -> Self
@@ -160,19 +160,31 @@ where
 
     /// Pairwise alignment using Smith Waterman algorithm (Semiglobal)
     pub fn pairwise_aligner_semiglobal(&mut self) {
-        tracing::info!("Performing pairwise alignment (semiglobal)");
+        tracing::info!(
+            "Performing pairwise alignment (semiglobal) using {} and {}",
+            self.gap_penalty,
+            self.score
+        );
         self.alignment = Some(self.aligner().semiglobal(self.reference, self.query));
     }
 
     /// Pairwise alignment using Smith Waterman algorithm (Global)
     pub fn pairwise_aligner_global(&mut self) {
-        tracing::info!("Performing pairwise alignment (global)");
+        tracing::info!(
+            "Performing pairwise alignment (global) using {} and {}",
+            self.gap_penalty,
+            self.score
+        );
         self.alignment = Some(self.aligner().global(self.reference, self.query));
     }
 
     /// Pairwise alignment using Smith Waterman algorithm (Local)
     pub fn pairwise_aligner_local(&mut self) {
-        tracing::info!("Performing pairwise alignment (local)");
+        tracing::info!(
+            "Performing pairwise alignment (local) using {} and {}",
+            self.gap_penalty,
+            self.score
+        );
         self.alignment = Some(self.aligner().local(self.reference, self.query));
     }
 

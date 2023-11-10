@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use bio::alignment::{pairwise::MatchFunc, Alignment};
 
 use crate::aliner::DiffStat;
@@ -11,7 +13,7 @@ struct MutationStats {
 
 struct Muatation<'m, F>
 where
-    F: MatchFunc + Clone,
+    F: MatchFunc + Clone + Display,
 {
     diffstat: &'m DiffStat<'m, F>,
     pairwise_alignment: Option<Alignment>,
@@ -19,7 +21,7 @@ where
 
 impl<'m, F> Muatation<'m, F>
 where
-    F: MatchFunc + Clone,
+    F: MatchFunc + Clone + Display,
 {
     pub fn from<D>(diffstat: &'m D) -> Self
     where
