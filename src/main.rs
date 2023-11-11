@@ -1,7 +1,6 @@
 use std::time::Instant;
 
 use aliner::DiffStat;
-use bio::io::fasta::Reader;
 
 use crate::{
     aliner::{GapPanelty, Score},
@@ -15,6 +14,7 @@ mod reader;
 // TODO:
 // 1. Mutation detection scoring (stats) [[mutation_detection.rs]]
 // 2. Pretty print is not considering '\n' as newline
+// 3. Add config file
 //
 
 // Initilize tracing
