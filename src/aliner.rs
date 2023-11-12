@@ -222,10 +222,9 @@ where
     /// Pretty print the alignment, see [bio::alignment::Alignment::pretty]
     pub fn pretty_print(&self, coloumn: usize) {
         tracing::info!("Pretty print with {} coloumns", coloumn);
-        self.alignment
+        if let Some(pretty) = self.alignment
             .as_ref()
-            .map(|alignment| alignment.pretty(self.reference, self.query, coloumn))
-            .map(|pretty| println!("{pretty}"));
+            .map(|alignment| alignment.pretty(self.reference, self.query, coloumn)) { println!("{pretty}") }
     }
 
     pub fn alignment(&self) -> Option<&Alignment> {

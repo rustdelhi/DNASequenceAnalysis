@@ -49,6 +49,6 @@ impl Iterator for FastaReaderIter {
     type Item = Record;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next().map(|rec| rec.ok()).flatten()
+        self.inner.next().and_then(|rec| rec.ok())
     }
 }

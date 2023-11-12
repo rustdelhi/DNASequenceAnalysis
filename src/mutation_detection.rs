@@ -17,7 +17,7 @@ pub struct MutationStats {
 
 impl Display for MutationStats {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", Table::new(vec![self]).to_string())
+        write!(f, "{}", Table::new(vec![self]))
     }
 }
 

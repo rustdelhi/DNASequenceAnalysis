@@ -1,4 +1,4 @@
-use bio::utils::TextSlice;
+
 use dna_sequence_analysis::{
     aliner::{DiffStat, GapPanelty, Score},
     init_logging,
