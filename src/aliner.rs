@@ -89,6 +89,7 @@ impl From<(i32, i32)> for GapPanelty {
 }
 
 /// Compare two sequences and align them
+#[derive(Debug)]
 pub struct DiffStat<'seq, F>
 where
     F: MatchFunc + Clone + Display,
@@ -105,20 +106,30 @@ where
     alignment: Option<PairwiseAlignment>,
 }
 
+impl<'seq, F> AsRef<Self> for DiffStat<'seq, F>
+where
+    F: MatchFunc + Clone + Display,
+{
+    fn as_ref(&self) -> &Self {
+        self
+    }
+}
+
 impl<'seq, F> DiffStat<'seq, F>
 where
     F: MatchFunc + Clone + Display,
 {
     /// Generate a new [DiffStat] that aligns query with reference as master sequence
-    pub fn new<T>(reference: &'seq T, query: &'seq T, gap_penalty: GapPanelty, score: F) -> Self
+    pub fn new<T, G>(reference: &'seq T, query: &'seq T, gap_penalty: G, score: F) -> Self
     where
         T: AsRef<[u8]> + ?Sized,
+        G: Into<GapPanelty>,
     {
         Self {
             reference: reference.as_ref(),
             query: query.as_ref(),
             alignment: None,
-            gap_penalty,
+            gap_penalty: gap_penalty.into(),
             score,
         }
     }
@@ -209,11 +220,12 @@ where
     }
 
     /// Pretty print the alignment, see [bio::alignment::Alignment::pretty]
-    pub fn pretty(&self, coloumn: usize) -> Option<String> {
+    pub fn pretty_print(&self, coloumn: usize) {
         tracing::info!("Pretty print with {} coloumns", coloumn);
         self.alignment
             .as_ref()
             .map(|alignment| alignment.pretty(self.reference, self.query, coloumn))
+            .map(|pretty| println!("{pretty}"));
     }
 
     pub fn alignment(&self) -> Option<&Alignment> {

@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.75"
 bio = "1.4.0"
+tabled = "0.14.0"
 thiserror = "1.0.50"
 tracing = "0.1.40"
 tracing-appender = "0.2.2"
