@@ -1,7 +1,7 @@
 //! This module is used to align two or more DNA/RNA sequences
 //! to "align" them, see: https://en.wikipedia.org/wiki/Sequence_alignment
 
-use std::fmt::Display;
+use std::{fmt::Display, intrinsics::mir::Return};
 
 use bio::alignment::{
     distance::{hamming, levenshtein},
@@ -222,9 +222,19 @@ where
     /// Pretty print the alignment, see [bio::alignment::Alignment::pretty]
     pub fn pretty_print(&self, coloumn: usize) {
         tracing::info!("Pretty print with {} coloumns", coloumn);
-        if let Some(pretty) = self.alignment
+        if let Some(pretty) = self
+            .alignment
             .as_ref()
-            .map(|alignment| alignment.pretty(self.reference, self.query, coloumn)) { println!("{pretty}") }
+            .map(|alignment| alignment.pretty(self.reference, self.query, coloumn))
+        {
+            println!("{pretty}")
+        }
+    }
+
+    pub fn pretty_string(&self, coloumn: usize) -> String {
+        self.alignment
+            .as_ref()
+            .map(|alignment| alignment.pretty(self.reference, self.query, coloumn))
     }
 
     pub fn alignment(&self) -> Option<&Alignment> {
