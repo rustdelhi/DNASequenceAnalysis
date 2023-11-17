@@ -1,7 +1,7 @@
 //! This module is used to align two or more DNA/RNA sequences
 //! to "align" them, see: https://en.wikipedia.org/wiki/Sequence_alignment
 
-use std::{fmt::Display, intrinsics::mir::Return};
+use std::fmt::Display;
 
 use bio::alignment::{
     distance::{hamming, levenshtein},
@@ -231,7 +231,7 @@ where
         }
     }
 
-    pub fn pretty_string(&self, coloumn: usize) -> String {
+    pub fn pretty_string(&self, coloumn: usize) -> Option<String> {
         self.alignment
             .as_ref()
             .map(|alignment| alignment.pretty(self.reference, self.query, coloumn))

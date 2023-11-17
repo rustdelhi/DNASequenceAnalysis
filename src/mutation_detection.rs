@@ -69,7 +69,8 @@ where
         F: MatchFunc,
     {
         assert!(
-            diffstat.as_ref().alignment().is_some(),"DiffStat is not aligned, please use pairwise alignment on Diffstast before using Muatation::from()"
+            diffstat.as_ref().alignment().is_some(),
+            "DiffStat is not aligned, please use pairwise alignment on Diffstast before using Muatation::from()"
         );
         Self {
             diffstat: diffstat.as_ref(),
@@ -107,5 +108,37 @@ mod test {
     fn make_mutation_wihtout_alignemnt() {
         let diffstat = DiffStat::new(&[], &[], (-1, -1), Into::<Score>::into((1, -1)));
         let _md = Muatation::from(diffstat.as_ref());
+    }
+
+    #[test]
+    fn mutation_score_accuracy() {
+        // Refer: https://docs.rs/bio/1.4.0/bio/alignment/struct.Alignment.html#method.pretty
+        let mut diffstat = DiffStat::new(
+            "CCGTCCGGCAAGGG",
+            "AAAAACCGTTGACGGCCAA",
+            (-1, -1),
+            Into::<Score>::into((1, -1)),
+        );
+        diffstat.pairwise_aligner_global();
+        let pretty = diffstat.pretty_string(120).expect("Unable to pretty print");
+
+        #[rustfmt::skip]
+        // Do not format this code, as raw strings are weird, and any unwanted spaces in expected
+        // string will result in falure of this test
+        //
+        // This is expected string(3 trailing newlines are added intentionally):
+        // -----CCGT--CCGGCAAGGG
+        // xxxxx||||xx\||||\|++\
+        // AAAAACCGTTGACGGCCA--A
+        //
+        //
+        //
+        let expected = r#"-----CCGT--CCGGCAAGGG
+xxxxx||||xx\||||\|++\
+AAAAACCGTTGACGGCCA--A
+
+
+"#;
+        assert_eq!(pretty, expected);
     }
 }
