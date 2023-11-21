@@ -19,6 +19,15 @@ pub struct Score {
     miss_match: i32,
 }
 
+impl Default for Score {
+    fn default() -> Self {
+        Self {
+            r#match: 1,
+            miss_match: -1,
+        }
+    }
+}
+
 impl Display for Score {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
@@ -65,6 +74,15 @@ impl MatchFunc for Score {
 pub struct GapPanelty {
     pub open: i32,
     pub extend: i32,
+}
+
+impl Default for GapPanelty {
+    fn default() -> Self {
+        Self {
+            open: -1,
+            extend: -1,
+        }
+    }
 }
 
 impl Display for GapPanelty {
