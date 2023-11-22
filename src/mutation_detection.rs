@@ -77,7 +77,7 @@ where
         }
     }
 
-    pub fn mutastion_score(&self) -> Option<MutationStats> {
+    pub fn mutation_score(&self) -> Option<MutationStats> {
         tracing::info!("Calcualting mutation score");
         self.diffstat.alignment().map(|alignment| {
             alignment
