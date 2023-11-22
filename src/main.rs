@@ -43,7 +43,7 @@ fn find_mutation(reference: PathBuf, query: PathBuf, print: bool) -> anyhow::Res
     let mut diff = DiffStat::new(reference_seq, query_seq, gap, score);
 
     let time = Instant::now();
-    diff.pairwise_aligner_semiglobal();
+    diff.pairwise_aligner_global();
 
     print.then(|| diff.pretty_print(120));
 
