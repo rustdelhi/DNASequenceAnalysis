@@ -53,3 +53,9 @@ cargo build --release
 ```bash
 ./target/release/dna_sequence_analysis --reference covid-beta.fasta --query covid-delta.fasta --print
 ```
+
+### Citations
+
+1. [Sequence Alignmnt](https://en.wikipedia.org/wiki/Sequence_alignment)
+2. [Smith Waterm Algorithm](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm)
+3. [NCBI](https://www.ncbi.nlm.nih.gov/)
