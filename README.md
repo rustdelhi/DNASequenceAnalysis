@@ -54,6 +54,18 @@ cargo build --release
 ./target/release/dna_sequence_analysis --reference covid-beta.fasta --query covid-delta.fasta --print
 ```
 
+Example output:
+
+```
+Score:
++---------+------------+--------------+------------+-----------+-------+
+| match | miss_match | substitution | insertions | deletions | total |
++---------+------------+--------------+------------+-----------+-------+
+| 29707   | 156        | 85           | 13         | 58        | 30019 |
++---------+------------+--------------+------------+-----------+-------+
+time taken: 11.037773246s
+```
+
 ### Citations
 
 1. [Sequence Alignmnt](https://en.wikipedia.org/wiki/Sequence_alignment)

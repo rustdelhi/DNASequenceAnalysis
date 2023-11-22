@@ -7,6 +7,7 @@ use crate::aliner::DiffStat;
 
 #[derive(Debug, Default, Tabled)]
 pub struct MutationStats {
+    #[tabled(rename = "match")]
     r#match: usize,
     miss_match: usize,
     substitution: usize,
