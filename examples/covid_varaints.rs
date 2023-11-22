@@ -10,9 +10,6 @@ fn main() -> anyhow::Result<()> {
     let _guard = init_logging();
     let covid_beta = FastaReader::from_file("./assets/SARS-beta.fasta")?;
     let covid_delta = FastaReader::from_file("./assets/SARS-delta.fasta")?;
-    let _covid_gamma = FastaReader::from_file("./assets/SARS-gamma.fasta")?;
-    let _covid_omicron = FastaReader::from_file("./assets/SARS-omicron.fasta")?;
-    let _covid_zeta = FastaReader::from_file("./assets/SARS-zeta.fasta")?;
 
     let beta_record = covid_beta.records().next().unwrap()?;
     let beta_seq = beta_record.seq();
