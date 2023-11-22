@@ -77,7 +77,7 @@ where
         }
     }
 
-    pub fn mutastion_score(&self) -> Option<MutationStats> {
+    pub fn mutation_score(&self) -> Option<MutationStats> {
         tracing::info!("Calcualting mutation score");
         self.diffstat.alignment().map(|alignment| {
             alignment
@@ -105,7 +105,7 @@ mod test {
 
     #[test]
     #[should_panic]
-    fn make_mutation_wihtout_alignemnt() {
+    fn make_mutation_without_alignemnt() {
         let diffstat = DiffStat::new(&[], &[], (-1, -1), Into::<Score>::into((1, -1)));
         let _md = Muatation::from(diffstat.as_ref());
     }

@@ -2,10 +2,9 @@
 
 ## Introduction
 
-This Rust project aims to provide a robust and efficient solution for DNA sequence analysis,
+This Rust project aims to provide a robust and efficient solution for basic DNA sequence analysis,
 including sequence alignments and mutation detection. Leveraging the power of Rust's performance
-and safety features, this project is designed to handle large-scale DNA data for various
-bioinformatics applications.
+and safety features.
 
 ## Features
 
@@ -48,10 +47,15 @@ cargo build --release
 
 ### Usage
 
-1. Adjust the parameters and sequences in the source code to fit your specific use case.
-
-2. Run the project:
+1. Run the project with 2 FASTA files that contains only 1 sequence each
+   (Example files included in assets folder):
 
 ```bash
-cargo run --release
+./target/release/dna_sequence_analysis --reference covid-beta.fasta --query covid-delta.fasta --print
 ```
+
+### Citations
+
+1. [Sequence Alignmnt](https://en.wikipedia.org/wiki/Sequence_alignment)
+2. [Smith Waterm Algorithm](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm)
+3. [NCBI](https://www.ncbi.nlm.nih.gov/)

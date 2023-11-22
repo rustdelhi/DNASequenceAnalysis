@@ -32,7 +32,7 @@ fn main() -> anyhow::Result<()> {
     diff.pretty_print(120);
     let ms = Muatation::from(&diff);
 
-    println!("Score: {}", ms.mutastion_score().unwrap());
+    println!("Score: {}", ms.mutation_score().unwrap());
     println!("time taken: {:?}", time.elapsed());
     Ok(())
 }
