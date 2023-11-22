@@ -49,7 +49,7 @@ fn find_mutation(reference: PathBuf, query: PathBuf, print: bool) -> anyhow::Res
 
     let ms = Muatation::from(&diff);
 
-    println!("Score: {}", ms.mutation_score().unwrap());
+    println!("Score: \n{}", ms.mutation_score().unwrap());
     println!("time taken: {:?}", time.elapsed());
 
     Ok(())
