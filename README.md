@@ -51,7 +51,7 @@ cargo build --release
    (Example files included in assets folder):
 
 ```bash
-./target/release/dna_sequence_analysis --reference covid-beta.fasta --query covid-delta.fasta --print
+cargo run --release -- --reference ./assets/SARS-beta.fasta --query ./assets/SARS-delta.fasta --print
 ```
 
 Example output:
@@ -65,6 +65,8 @@ Score:
 +---------+------------+--------------+------------+-----------+-------+
 time taken: 11.037773246s
 ```
+
+Run `cargo run --release -- --help` to know more about CLI usage
 
 ### Citations
 

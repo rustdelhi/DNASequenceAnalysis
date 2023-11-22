@@ -16,8 +16,6 @@ fn main() -> anyhow::Result<()> {
     let delta_record = covid_delta.records().next().unwrap()?;
     let delta_seq = delta_record.seq();
 
-    // TODO: Comapre all sequences with one another
-
     let score = Score::new(1, -1);
     let gap = GapPanelty::new(-5, -1);
 
