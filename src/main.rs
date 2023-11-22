@@ -30,13 +30,13 @@ fn find_mutation(reference: PathBuf, query: PathBuf, print: bool) -> anyhow::Res
     let reference = FastaReader::from_file(reference)?;
     let query = FastaReader::from_file(query)?;
 
+    // FASTA files contain only 1 sequence
     let reference_record = reference.records().next().unwrap()?;
     let reference_seq = reference_record.seq();
     let query_record = query.records().next().unwrap()?;
     let query_seq = query_record.seq();
 
-    // TODO: Compare all sequences with one another
-
+    // Default score
     let score = Score::new(1, -1);
     let gap = GapPanelty::new(-5, -1);
 
